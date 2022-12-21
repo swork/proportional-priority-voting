@@ -1,0 +1,15 @@
+{
+    "_id": "_design/votes",
+    "lib": {
+        "normal": "{ normal_lib }"
+    },
+    "views": {
+        "votes": {
+            "map": "{ votes_map }",
+            "reduce": "_stats"
+        },
+        "normal": {
+            "map": "{ normal_map }"
+        }
+    }
+}
