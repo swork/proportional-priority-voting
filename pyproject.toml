@@ -11,7 +11,7 @@ classifiers = [
   "Programming Language :: Python :: 3",
 ]
 dependencies = [
-  "aiohttp"
+  "trio", "httpx", "click"
 ]
 
 packages = ["proportional_priority_voting"]
@@ -21,10 +21,10 @@ url = "https://github.com/swork/proportional-priority-voting"
 license = "BSD-2-Clause"
 
 [project.optional-dependencies]
-cli = ["click"]
 doc = ["sphinx"]
 
 [project.scripts]
+ppv_design = "proportional_priority_voting.design:main"
 setup2toml = "enscons.setup2toml:main"
 
 [build-system]

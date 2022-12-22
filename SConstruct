@@ -42,8 +42,8 @@ env = Environment(
     WHEEL_TAG=full_tag,
 )
 
-ddoc_votes = env.Command('votes.json',
-                         ["_design/votes.json.template"] + Glob("_design/*.js"),
+ddoc_votes = env.Command('proportional_priority_voting/_design/votes.json',
+                         ["design/votes.json.template"] + Glob("design/*.js"),
                          env.Action(merge))
 
 py_source = Glob('proportional_priority_voting/*.py') + ddoc_votes

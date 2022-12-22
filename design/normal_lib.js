@@ -1,8 +1,8 @@
-function (votes) {
+function proportionalize_votes(votes) {
     let vs = {}
     let total = 0
     for (const item of Object.keys(votes)) {
-        console.log(votes[item])
+        log(votes[item])
         if (votes[item] === 0) {
             continue
         }
@@ -11,11 +11,13 @@ function (votes) {
     }
 
     let adjust = 100 / total;
-    console.log(adjust)
+    log(adjust)
     let vs2 = {}
     for (const item of Object.keys(vs)) {
-        console.log(vs[item] * adjust)
+        log(vs[item] * adjust)
         vs2[item] = Math.floor(vs[item] * adjust)
     }
     return vs2
 }
+
+exports['proportionalize_votes'] = proportionalize_votes
