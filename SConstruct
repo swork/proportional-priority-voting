@@ -1,6 +1,8 @@
+from openapi_spec_validator import validate_spec, openapi_v31_spec_validator
 import pytoml as toml
 import enscons
 import json
+import os
 import re
 
 def merge(target=None, source=None, env=None):
@@ -31,6 +33,9 @@ def merge(target=None, source=None, env=None):
                 line = re.sub(r'[ \t]+', ' ', line)
                 target_file.write(line)
 
+def openapi_validator(target=None, source=None, env=None):
+    with open(str(source[0]), 'r') as specfile:
+        validate_spec(json.load(specfile), validator=openapi_v31_spec_validator)
 
 metadata = toml.load(open("pyproject.toml"))["project"]
 
@@ -41,6 +46,9 @@ env = Environment(
     PACKAGE_METADATA=metadata,
     WHEEL_TAG=full_tag,
 )
+
+# Phony target, unreferenced
+env.AlwaysBuild(env.Alias('SPEC', ['openapi.json'], openapi_validator))
 
 ddoc_votes = env.Command('proportional_priority_voting/_design/votes.json',
                          ["design/votes.json.template"] + Glob("design/*.js"),

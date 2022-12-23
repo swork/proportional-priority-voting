@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # Call enscons to emulate setup.py, installing if necessary.
-# (this setup.py can be copied into any enscons-powered project by editing requires=)
 
 import sys, subprocess, os.path
 

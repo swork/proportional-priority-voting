@@ -1,0 +1,212 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "proportional-priority-voting",
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/result": {
+            "get": {
+                "description": "Returns summarized votes",
+                "responses": {
+                    "200": {
+                        "description": "A ranked list of item vote summaries",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Voting"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ranking/{identity}": {
+            "get": {
+                "description": "Returns one user's stored votes",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/rawParam"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "One user's stored votes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ranking"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Set one user's votes",
+                "requestBody": {
+                    "description": "One user's rankings",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Ranking"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Indicate success and normalization",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ranking"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "parameters": [ {
+                "$ref": "#/components/parameters/identityParam"
+            } ]
+        },
+        "/item/{item}": {
+            "delete": {
+                "description": "Remove a named item from every ranking",
+                "responses": {
+                    "200": {
+                        "description": "Success, all votes renormalized"
+                    }
+                }
+            },
+            "parameters": [ {
+                "$ref": "#/components/parameters/itemParam"
+            } ]
+        },
+        "/item/{item}/{new}": {
+            "post": {
+                "description": "Rename item to new, adding rankings if needed",
+                "responses": {
+                    "200": {
+                        "description": "Success, all votes renormalized"
+                    }
+                }
+            },
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/itemParam"
+                },
+                {
+                    "$ref": "#/components/parameters/newParam"
+                }
+            ]
+        },
+        "/identities": {
+            "get": {
+                "description": "List voters",
+                "responses": {
+                    "200": {
+                        "description": "A list of every voter. No pagination",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "parameters": {
+            "rawParam": {
+                "name": "raw",
+                "in": "query",
+                "description": "Give submitted vote values, not normalized values",
+                "required": false,
+                "schema": {
+                    "type": "boolean"
+                }
+            },
+            "itemParam": {
+                "name": "item",
+                "in": "path",
+                "description": "The item string to operate on",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "newParam": {
+                "name": "new",
+                "in": "path",
+                "description": "The new item name",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "identityParam": {
+                "name": "identity",
+                "in": "path",
+                "description": "The identity of the person associated with these votes",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas": {
+            "Ranking": {
+                "required": [
+                    "votes"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "identity": {
+                        "type": "string"
+                    },
+                    "votes": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            },
+            "Voting": {
+                "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "sum": {
+                            "type": "number"
+                        },
+                        "count": {
+                            "type": "number"
+                        },
+                        "min": {
+                            "type": "number"
+                        },
+                        "max": {
+                            "type": "number"
+                        },
+                        "sumsqr": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
