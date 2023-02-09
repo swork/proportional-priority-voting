@@ -16,11 +16,11 @@ An item is added to the scheme by anyone voting for it - that is, it's up
 to calling code to manage the addition of items.
 
 An item can be removed from the scheme, by passing through all voters' packages and eliminating the item everywhere it exists; all vote packages that included
-that item are re-proportioned.
+that item get re-proportioned as described above.
 
-An item can be renamed. If both the old and new items exist in any vote package,
+An item can be renamed, again by passing through all voters' vote packages. If both the old and new items exist 
 the old item is removed and its ranking added to the other's. Otherwise the old
-item is simply removed from the vote package.
+item is simply renamed in the vote package.
 
 ## Backends
 
